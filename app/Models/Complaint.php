@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Complaint extends Model
 {
     use HasFactory;
+
+    //protected $fillable = ['title','description'] akan kmaskini yg ada ahj
+
+    protected $guarded =[];   // masukkan variable yg taknak update..terbalik 
 }

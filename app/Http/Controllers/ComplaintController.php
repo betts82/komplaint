@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreComplaintRequest;
 use App\Http\Requests\UpdateComplaintRequest;
 use App\Models\Complaint;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class ComplaintController extends Controller
 {
@@ -52,7 +53,9 @@ class ComplaintController extends Controller
     public function edit(Complaint $complaint)
     {
         //dd(); //die n dump
-            return view('complaint.edit');
+        return view('complaint.edit', [
+            'complaint' => $complaint
+        ]);
 
     }
 
@@ -61,7 +64,30 @@ class ComplaintController extends Controller
      */
     public function update(UpdateComplaintRequest $request, Complaint $complaint)
     {
-        //
+       // dd($request->all()); cara debug
+
+        //1.validate data yg nk update
+        $request->validate([
+            'title' => ['required','max:100'],
+            'description' => ['required']
+
+        ]);
+
+        //2. update data
+
+        $complaint->update([
+            'title' => $request->input('title'),
+            'description' => $request->input('description')
+
+        ]);
+
+        //3 . redirect user ke another page
+
+        return back()->with('success','Record update successfully'); //return back page sama
+       // return to_route('complaint.index')->with('success','Record update successfully');// return back ke dahboard/muka utama
+        //4.
+
+
     }
 
     /**
